@@ -1,0 +1,99 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Sagar- Gcloud Demo</title>
+
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+
+<!--Google Fonts-->
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+<!--Google Fonts-->
+    
+    
+    <script type="text/javascript">
+function OnInput (event) {
+	var textdata = event.target.value;
+	var phpurl = 'calldatastore.php?searchtext=' + textdata;
+	getRequest(
+		phpurl,
+		drawOutput,
+		drawError
+	);
+}
+function drawError() {
+	var container = document.getElementById('output');
+	container.innerHTML = 'Sorry, No Products match your search';
+}
+function drawOutput(responseText) {
+	var container = document.getElementById('output');
+	container.innerHTML = responseText;
+}
+function getRequest(url, success, error) {
+    var req = false;
+    try{
+        // most browsers
+        req = new XMLHttpRequest();
+    } catch (e){
+        // IE
+        try{
+            req = new ActiveXObject("Msxml2.XMLHTTP");
+        } catch(e) {
+            // try an older version
+            try{
+                req = new ActiveXObject("Microsoft.XMLHTTP");
+            } catch(e) {
+                return false;
+            }
+        }
+    }
+    if (!req) return false;
+    if (typeof success != 'function') success = function () {};
+    if (typeof error!= 'function') error = function () {};
+    req.onreadystatechange = function(){
+        if(req.readyState == 4) {
+            return req.status === 200 ?
+                success(req.responseText) : error(req.status);
+        }
+    }
+    req.open("GET", url, true);
+    req.send(null);
+    return req;
+}
+// Internet Explorer
+//function OnPropChanged (event) {
+//	if (event.propertyName.toLowerCase () == "value") {
+//		alert ("The new content: " + event.srcElement.value);
+//	}
+//}
+</script>
+</head>
+<body>
+    
+    
+    
+<!--search start here-->
+
+<div class="search">
+	<i> </i>
+    
+	<div class="s-bar">
+        <h1>AutoComplete Gcloud</h1>
+           <form action="upload.php" method="post" enctype="multipart/form-data" class="titlea">
+               
+               <input type="text" oninput="OnInput(event);" onpropertychange="OnPropChanged(event);" class="search-field" autofocus>
+               
+		<input type="submit"  value="Search"/>
+               <ul id="output" class="term-list">Autocomplete output</ul>
+	  </form>
+	</div>
+	
+</div>
+<!--search end here-->	
+
+</body>
+</html>
